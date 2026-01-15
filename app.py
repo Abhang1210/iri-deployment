@@ -1,26 +1,24 @@
 import streamlit as st
+import pickle
 import numpy as np
-import pickle 
 import sklearn
 
-# Load model 
-with open("model.pkl") as f:
+# Load saved model
+with open("model.pkl", "rb") as f:
     model = pickle.load(f)
 
+# Streamlit UI
+st.title("Iris Flower Classifier")
+st.write("Enter the features below:")
 
+# Input fields
+sepal_length = st.number_input("Sepal Length", min_value=4.0, max_value=8.0)
+sepal_width = st.number_input("Sepal Width", min_value=2.0, max_value=5.0)
+petal_length = st.number_input("Petal Length", min_value=1.0, max_value=7.0)
+petal_width = st.number_input("Petal Width", min_value=0.1, max_value=3.0)
 
-# Streamlit UI 
-st.title("Iris flower Classification")
-st.write("Enter the features below")
-
-#Input features
-sl = st.number_input("Sepal length : ",min_value=4.3,max_value=7.9)
-sw = st.number_input("Sepal width : ",min_value=2,max_value=4.4)
-pl = st.number_input("Petal length : ",min_value=1,max_value=6.9)
-pw = st.number_input("Petal width : ",min_value=0.1,max_value=2.5)
-
-# Button predict
+# Predict button
 if st.button("Predict"):
-    pred=model.predict([[sl,sw,pl,pw]])
-    classes = ['Setosa','Versicolor','Virginica']
+    prediction = model.predict([[sepal_length, sepal_width, petal_length, petal_width]])
+    classes = ["Setosa", "Versicolor", "Virginica"]
     st.write(f"Prediction: {classes[prediction[0]]}")
